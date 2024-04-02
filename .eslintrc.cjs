@@ -8,10 +8,14 @@ module.exports = {
     },
   ],
   parserOptions: {
+    parser: '@typescript-eslint/parser',
     project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
     'import/extensions': 'off',
+    'linebreak-style': ['error', process.env.NODE_ENV === 'prod' ? 'unix' : 'windows'],
   },
+  ignorePatterns: ['.eslintrc.cjs', 'next.config.mjs'],
 };
