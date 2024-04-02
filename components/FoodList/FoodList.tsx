@@ -49,7 +49,7 @@ export function FoodList() {
         <br />
         <Grid p={1}>
           {filteredData.map((f) => (
-            <Grid.Col span={4}>
+            <Grid.Col span={4} key={f.name}>
               <Card shadow="sm" padding="sm" radius="md" miw="20vh" withBorder>
                 <Card.Section mb={10}>
                   <Image h={200} w="full" fit="cover" src={f.imgURL} />
