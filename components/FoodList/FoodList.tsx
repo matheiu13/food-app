@@ -18,12 +18,15 @@ import { AddItem } from '../AddItem/AddItem';
 
 export function FoodList() {
   const [opened, { open, close }] = useDisclosure(false);
-  const [, setQuery] = useState('');
   const [filteredData, setFilteredData] = useState(food);
+  const [toggle, setToggle] = useState(false);
   const handleChangeQuery = (e: React.ChangeEvent<any>): void => {
     const { value } = e.target;
-    setQuery(value);
     filterData(value);
+  };
+  const handleSortClick = () => {
+    sortData(toggle);
+    setToggle(!toggle);
   };
 
   const filterData = (query: string) => {
@@ -34,12 +37,22 @@ export function FoodList() {
     setFilteredData(filteredData);
   };
 
+  const sortData = (value: any) => {
+    let sortedData: any;
+    if (value === true) {
+      sortedData = food.sort((a, b) => a.rating - b.rating);
+    } else {
+      sortedData = food.sort((a, b) => b.rating - a.rating);
+    }
+    setFilteredData(sortedData);
+  };
+
   return (
     <>
       <Container p={0} pt="5vh">
         <Flex w="full" gap={5} align="center">
           <TextInput w="100%" onChange={handleChangeQuery} placeholder="Search for an item" />
-          <ActionIcon size={32} radius="sm" variant="filled">
+          <ActionIcon size={32} radius="sm" variant="filled" onClick={handleSortClick}>
             <IconArrowsDownUp style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </ActionIcon>
           <ActionIcon size={32} radius="sm" variant="filled" onClick={open}>
