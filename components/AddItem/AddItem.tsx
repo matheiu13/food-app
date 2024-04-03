@@ -1,6 +1,7 @@
 import { Group, Button, TextInput, Input, Text, Textarea } from '@mantine/core';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { modals } from '@mantine/modals';
 import * as yup from 'yup';
 // import { modals } from '@mantine/modals';
 
@@ -30,7 +31,7 @@ export function AddItem({ callback, closeModal }: any) {
   });
   const onSubmit: SubmitHandler<InpForm> = (data) => {
     callback(data);
-    closeModal();
+    closeModal(() => modals.closeAll());
   };
   return (
     <>
