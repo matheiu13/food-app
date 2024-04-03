@@ -13,6 +13,7 @@ import {
 import { IconArrowsDownUp, IconPlus } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
+// import { modals } from '@mantine/modals';
 import { food } from '../../constants/foodlist.js';
 import { AddItem } from '../AddItem/AddItem';
 
@@ -36,15 +37,18 @@ export function FoodList() {
     );
     setFilteredData(filteredData);
   };
-
-  const sortData = (value: any) => {
-    let sortedData: any;
+  const sortData = (value: boolean) => {
+    let sortedData: typeof food;
     if (value === true) {
       sortedData = food.sort((a, b) => a.rating - b.rating);
     } else {
       sortedData = food.sort((a, b) => b.rating - a.rating);
     }
     setFilteredData(sortedData);
+  };
+
+  const addNewItem = (value: any) => {
+    food.push(value);
   };
 
   return (
@@ -80,7 +84,7 @@ export function FoodList() {
         </Grid>
       </Container>
       <Modal opened={opened} onClose={close} title="Add a new Food Item" centered>
-        <AddItem />
+        <AddItem callback={addNewItem} closeModal={close} />
       </Modal>
     </>
   );
