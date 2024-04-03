@@ -23,6 +23,7 @@ export function FoodList() {
     const { value } = e.target;
     filterData(value);
   };
+  // useEffect(()=>{},[food])
   const filterData = (query: string) => {
     const filterDataByInput = food.filter((item) =>
       item.name.toLowerCase().includes(query.toLowerCase())
@@ -35,7 +36,7 @@ export function FoodList() {
     setToggle(!toggle);
   };
   const sortData = (value: boolean) => {
-    let sortedData: typeof food;
+    let sortedData: any;
     if (value === true) {
       sortedData = food.sort((a, b) => a.rating - b.rating);
     } else {
@@ -44,14 +45,24 @@ export function FoodList() {
     setFilteredData(sortedData);
   };
 
-  const addNewItem = (value: any) => {
-    food.push(value);
+  // useEffect(() => {
+  //   alert('test');
+  // }, [filteredData]);
+  const addNewItem = (newItem: any) => {
+    // food.push(newItem);
+    setFilteredData((oldList) => [...oldList, newItem]);
+    // console.log(JSON.stringify(filteredData));
+    modals.closeAll();
   };
 
   const openAddItem = () =>
     modals.open({
       title: 'Please confirm your action',
-      children: <AddItem callback={addNewItem} closeModal={() => {}} />,
+      children: <AddItem callback={addNewItem} />,
+      // onClose: () => {
+      //   setFilteredData(food);
+      //   console.log('test');
+      // },
     });
   const viewImage = (img: string) =>
     modals.open({
@@ -81,8 +92,8 @@ export function FoodList() {
             </Flex>
             <br />
             <Grid p={1}>
-              {filteredData.map((f) => (
-                <Grid.Col span={4} key={f.name}>
+              {filteredData.map((f, index) => (
+                <Grid.Col span={4} key={index}>
                   <Card shadow="sm" padding="sm" radius="md" miw="20vh" withBorder>
                     <Card.Section mb={10}>
                       <Image

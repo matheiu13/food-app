@@ -1,18 +1,20 @@
 import { Group, Button, TextInput, Input, Text, Textarea } from '@mantine/core';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { modals } from '@mantine/modals';
+// import { modals } from '@mantine/modals';
 import * as yup from 'yup';
 // import { modals } from '@mantine/modals';
 
-interface InpForm {
+// change syntax into an array of objects
+// use fullwords
+export type InpForm = {
   name: string;
   desc: string;
   imgURL: string;
   rating: string;
-}
+};
 
-export function AddItem({ callback, closeModal }: any) {
+export function AddItem({ callback }: any) {
   const schema = yup
     .object({
       name: yup.string().required(),
@@ -29,10 +31,7 @@ export function AddItem({ callback, closeModal }: any) {
   } = useForm<InpForm>({
     resolver: yupResolver(schema),
   });
-  const onSubmit: SubmitHandler<InpForm> = (data) => {
-    callback(data);
-    closeModal(() => modals.closeAll());
-  };
+  const onSubmit: SubmitHandler<InpForm> = (data) => callback(data);
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
