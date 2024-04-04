@@ -130,11 +130,24 @@ export function FoodList() {
                         </Text>
                       </Box>
                     ) : (
-                      <Box onClick={() => toggleCard(index)} style={{ cursor: 'pointer' }}>
-                        <Text size="sm" mb={10} truncate c="blue">
-                          {f.desc}
-                        </Text>
-                      </Box>
+                      <>
+                        {f.desc.length >= 40 ? (
+                          <Box onClick={() => toggleCard(index)} style={{ cursor: 'pointer' }}>
+                            <Text size="sm" mb={10} truncate>
+                              {f.desc}
+                            </Text>
+                            <Text size="sm" mb={10}>
+                              <u>view more</u>
+                            </Text>
+                          </Box>
+                        ) : (
+                          <Box>
+                            <Text size="sm" mb={10} truncate>
+                              {f.desc}
+                            </Text>
+                          </Box>
+                        )}
+                      </>
                     )}
 
                     <Collapse in={openedCards[index]}>
