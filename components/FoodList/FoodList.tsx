@@ -13,8 +13,8 @@ import {
   UnstyledButton,
   rem,
 } from '@mantine/core';
-import { IconPlus, IconSortDescending, IconSortAscending } from '@tabler/icons-react';
-import { useState } from 'react';
+import { IconSquareRoundedPlus, IconSortDescending, IconSortAscending } from '@tabler/icons-react';
+import { ChangeEvent, useState } from 'react';
 import { ModalsProvider, modals } from '@mantine/modals';
 import { notifications, Notifications } from '@mantine/notifications';
 import { food } from '../../constants/foodlist.js';
@@ -25,7 +25,7 @@ export function FoodList() {
   const [toggler, setToggle] = useState(false);
   const [openedCards, setOpenedCards] = useState(new Array(filteredData.length).fill(false));
 
-  const handleChangeQuery = (e: React.ChangeEvent<any>): void => {
+  const handleChangeQuery = (e: ChangeEvent<HTMLInputElement>): void => {
     const { value } = e.target;
     filterData(value);
   };
@@ -97,15 +97,16 @@ export function FoodList() {
 
               {toggler ? (
                 <Button onClick={handleSortClick}>
-                  Sort <IconSortDescending style={{ width: rem(42) }} stroke={1.5} />
+                  Sort <IconSortDescending style={{ width: rem(42) }} stroke={2} />
                 </Button>
               ) : (
                 <Button onClick={handleSortClick}>
-                  Sort <IconSortAscending style={{ width: rem(42) }} stroke={1.5} />
+                  Sort <IconSortAscending style={{ width: rem(42) }} stroke={2} />
                 </Button>
               )}
               <Button onClick={openAddItem}>
-                Add Item <IconPlus style={{ width: rem(42) }} stroke={1.5} />
+                Add Item{' '}
+                <IconSquareRoundedPlus style={{ width: rem(42), marginLeft: '5px' }} stroke={2.5} />
               </Button>
             </Flex>
             <br />
