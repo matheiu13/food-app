@@ -13,8 +13,9 @@ import {
 import { IconPlus, IconSortDescending, IconSortAscending } from '@tabler/icons-react';
 import { useState } from 'react';
 import { ModalsProvider, modals } from '@mantine/modals';
+import { notifications, Notifications } from '@mantine/notifications';
 import { food } from '../../constants/foodlist.js';
-import { AddItem } from '../AddItem/AddItem';
+import { AddItem, InputForm } from '../AddItem/AddItem';
 
 export function FoodList() {
   const [filteredData, setFilteredData] = useState(food);
@@ -23,9 +24,8 @@ export function FoodList() {
     const { value } = e.target;
     filterData(value);
   };
-  // useEffect(()=>{},[food])
   const filterData = (query: string) => {
-    const filterDataByInput = food.filter((item) =>
+    const filterDataByInput = [...food].filter((item) =>
       item.name.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredData(filterDataByInput);
@@ -36,33 +36,35 @@ export function FoodList() {
     setToggle(!toggle);
   };
   const sortData = (value: boolean) => {
-    let sortedData: any;
+    let sortedData: InputForm[];
     if (value === true) {
-      sortedData = food.sort((a, b) => a.rating - b.rating);
+      sortedData = [...food].sort((a, b) => a.rating - b.rating);
     } else {
-      sortedData = food.sort((a, b) => b.rating - a.rating);
+      sortedData = [...food].sort((a, b) => b.rating - a.rating);
     }
     setFilteredData(sortedData);
   };
 
-  // useEffect(() => {
-  //   alert('test');
-  // }, [filteredData]);
-  const addNewItem = (newItem: any) => {
-    // food.push(newItem);
-    setFilteredData((oldList) => [...oldList, newItem]);
-    // console.log(JSON.stringify(filteredData));
+  // add new item by filling up a form
+  const addNewItem = (newItem: InputForm) => {
+    const updatedFood = [...food, newItem];
+    food.push(newItem);
+    setFilteredData(updatedFood);
     modals.closeAll();
+    notifications.show({
+      title: 'Success',
+      message: 'The item you created is successfully added.',
+      autoClose: 3500,
+      withCloseButton: true,
+      color: 'green',
+      withBorder: true,
+    });
   };
 
   const openAddItem = () =>
     modals.open({
       title: 'Please confirm your action',
       children: <AddItem callback={addNewItem} />,
-      // onClose: () => {
-      //   setFilteredData(food);
-      //   console.log('test');
-      // },
     });
   const viewImage = (img: string) =>
     modals.open({
@@ -76,6 +78,7 @@ export function FoodList() {
     <>
       <MantineProvider>
         <ModalsProvider>
+          <Notifications position="bottom-right" zIndex={1000} limit={4} />
           <Container p={0} pt="5vh">
             <Flex w="full" gap={5} align="center">
               <TextInput w="100%" onChange={handleChangeQuery} placeholder="Search for an item" />
