@@ -95,17 +95,17 @@ export function FoodList() {
 
             {toggler ? (
               <Button onClick={handleSortClick}>
-                Sort Rating{' '}
+                Sort Rating
                 <IconSortDescending style={{ width: rem(54), marginLeft: '5px' }} stroke={2} />
               </Button>
             ) : (
               <Button onClick={handleSortClick}>
-                Sort Rating{' '}
+                Sort Rating
                 <IconSortAscending style={{ width: rem(54), marginLeft: '5px' }} stroke={2} />
               </Button>
             )}
             <Button onClick={openAddItem}>
-              Add Item{' '}
+              Add Item
               <IconSquareRoundedPlus style={{ width: rem(52), marginLeft: '5px' }} stroke={2.5} />
             </Button>
           </Flex>
@@ -113,7 +113,7 @@ export function FoodList() {
           <Grid p={1}>
             {filteredData.map((f, index) => (
               <Grid.Col span={4} key={index}>
-                <Card shadow="sm" padding="sm" radius="md" mih="60vh" withBorder>
+                <Card shadow="lg" padding="sm" radius="md" mih="60vh" withBorder>
                   <Card.Section mb={10}>
                     <Image
                       h={200}
