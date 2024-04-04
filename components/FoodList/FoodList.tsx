@@ -1,5 +1,5 @@
 import {
-  ActionIcon,
+  Button,
   Card,
   Container,
   Flex,
@@ -66,6 +66,7 @@ export function FoodList() {
       title: 'Please confirm your action',
       children: <AddItem callback={addNewItem} />,
     });
+
   const viewImage = (img: string) =>
     modals.open({
       size: 'xl',
@@ -82,35 +83,32 @@ export function FoodList() {
           <Container p={0} pt="5vh">
             <Flex w="full" gap={5} align="center">
               <TextInput w="100%" onChange={handleChangeQuery} placeholder="Search for an item" />
-              <ActionIcon size={32} radius="sm" variant="filled" onClick={handleSortClick}>
-                {toggle ? (
-                  <IconSortDescending style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
-                ) : (
-                  <IconSortAscending style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
-                )}
-              </ActionIcon>
-              <ActionIcon size={32} radius="sm" variant="filled" onClick={openAddItem}>
-                <IconPlus style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
-              </ActionIcon>
+
+              {toggle ? (
+                <Button onClick={handleSortClick}>
+                  Sort <IconSortDescending style={{ width: rem(42) }} stroke={1.5} />
+                </Button>
+              ) : (
+                <Button onClick={handleSortClick}>
+                  Sort <IconSortAscending style={{ width: rem(42) }} stroke={1.5} />
+                </Button>
+              )}
+              <Button onClick={openAddItem}>
+                Add Item <IconPlus style={{ width: rem(42) }} stroke={1.5} />
+              </Button>
             </Flex>
             <br />
             <Grid p={1}>
               {filteredData.map((f, index) => (
                 <Grid.Col span={4} key={index}>
-                  <Card shadow="sm" padding="sm" radius="md" miw="20vh" withBorder>
+                  <Card shadow="sm" padding="sm" radius="md" mah="30vw" withBorder>
                     <Card.Section mb={10}>
-                      <Image
-                        h={200}
-                        w="full"
-                        fit="cover"
-                        src={f.imgURL}
-                        onClick={() => viewImage(f.imgURL)}
-                      />
+                      <Image h={200} w="full" src={f.imgURL} onClick={() => viewImage(f.imgURL)} />
                     </Card.Section>
                     <Text size="xl" fw={700}>
                       {f.name}
                     </Text>
-                    <Text size="sm" mb={10}>
+                    <Text size="sm" mb={10} lineClamp={4}>
                       {f.desc}
                     </Text>
                     <Text>Rating: {f.rating}/5</Text>
