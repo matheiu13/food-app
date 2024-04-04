@@ -1,6 +1,8 @@
 import {
+  Box,
   Button,
   Card,
+  Collapse,
   Container,
   Flex,
   Grid,
@@ -8,6 +10,7 @@ import {
   MantineProvider,
   Text,
   TextInput,
+  UnstyledButton,
   rem,
 } from '@mantine/core';
 import { IconPlus, IconSortDescending, IconSortAscending } from '@tabler/icons-react';
@@ -19,7 +22,9 @@ import { AddItem, InputForm } from '../AddItem/AddItem';
 
 export function FoodList() {
   const [filteredData, setFilteredData] = useState(food);
-  const [toggle, setToggle] = useState(false);
+  const [toggler, setToggle] = useState(false);
+  const [openedCards, setOpenedCards] = useState(new Array(filteredData.length).fill(false));
+
   const handleChangeQuery = (e: React.ChangeEvent<any>): void => {
     const { value } = e.target;
     filterData(value);
@@ -32,8 +37,8 @@ export function FoodList() {
   };
 
   const handleSortClick = () => {
-    sortData(toggle);
-    setToggle(!toggle);
+    sortData(toggler);
+    setToggle(!toggler);
   };
   const sortData = (value: boolean) => {
     let sortedData: InputForm[];
@@ -47,9 +52,8 @@ export function FoodList() {
 
   // add new item by filling up a form
   const addNewItem = (newItem: InputForm) => {
-    const updatedFood = [...food, newItem];
+    setFilteredData((updatedFood) => [...updatedFood, newItem]);
     food.push(newItem);
-    setFilteredData(updatedFood);
     modals.closeAll();
     notifications.show({
       title: 'Success',
@@ -69,11 +73,18 @@ export function FoodList() {
 
   const viewImage = (img: string) =>
     modals.open({
-      size: 'xl',
+      size: 'lg',
       padding: '0',
       withCloseButton: false,
-      children: <Image h="auto" w="100%" src={img} fit="contain" />,
+      children: <Image w="100%" src={img} fit="contain" />,
     });
+
+  // const [opened, { toggle }] = useDisclosure(false);
+  const toggleCard = (index: number) => {
+    const newOpenedCards = [...openedCards];
+    newOpenedCards[index] = !newOpenedCards[index];
+    setOpenedCards(newOpenedCards);
+  };
 
   return (
     <>
@@ -84,7 +95,7 @@ export function FoodList() {
             <Flex w="full" gap={5} align="center">
               <TextInput w="100%" onChange={handleChangeQuery} placeholder="Search for an item" />
 
-              {toggle ? (
+              {toggler ? (
                 <Button onClick={handleSortClick}>
                   Sort <IconSortDescending style={{ width: rem(42) }} stroke={1.5} />
                 </Button>
@@ -101,16 +112,38 @@ export function FoodList() {
             <Grid p={1}>
               {filteredData.map((f, index) => (
                 <Grid.Col span={4} key={index}>
-                  <Card shadow="sm" padding="sm" radius="md" mah="30vw" withBorder>
+                  <Card shadow="sm" padding="sm" radius="md" mih="22vh" withBorder>
                     <Card.Section mb={10}>
                       <Image h={200} w="full" src={f.imgURL} onClick={() => viewImage(f.imgURL)} />
                     </Card.Section>
                     <Text size="xl" fw={700}>
                       {f.name}
                     </Text>
-                    <Text size="sm" mb={10} lineClamp={4}>
-                      {f.desc}
-                    </Text>
+                    {openedCards[index] ? (
+                      <Box
+                        onClick={() => toggleCard(index)}
+                        style={{ cursor: 'pointer', display: 'none' }}
+                      >
+                        <Text mb={10} truncate>
+                          {f.desc}
+                        </Text>
+                      </Box>
+                    ) : (
+                      <Box onClick={() => toggleCard(index)} style={{ cursor: 'pointer' }}>
+                        <Text size="sm" mb={10} truncate c="blue">
+                          {f.desc}
+                        </Text>
+                      </Box>
+                    )}
+
+                    <Collapse in={openedCards[index]}>
+                      <Text size="sm" mb={10}>
+                        {f.desc}
+                      </Text>
+                      <UnstyledButton onClick={() => toggleCard(index)}>
+                        <u>view less</u>
+                      </UnstyledButton>
+                    </Collapse>
                     <Text>Rating: {f.rating}/5</Text>
                   </Card>
                 </Grid.Col>
