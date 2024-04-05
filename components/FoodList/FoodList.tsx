@@ -1,14 +1,24 @@
 import { Card, Container, Flex, Grid, TextInput, Image, Text } from '@mantine/core';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { food } from '../../constants/dummyDB.js';
 
 export function FoodList() {
-  const [filteredData] = useState(food);
+  const [filteredData, setFilteredData] = useState(food);
+  const handleChangeQuery = (e: ChangeEvent<HTMLInputElement>): void => {
+    const { value } = e.target;
+    filterData(value);
+  };
+  const filterData = (query: string) => {
+    const filterDataByInput = [...food].filter((item) =>
+      item.name.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredData(filterDataByInput);
+  };
   return (
     <>
       <Container p={0} pt="5vh">
         <Flex w="full" gap={5} align="center" mb={10}>
-          <TextInput w="100%" placeholder="Search for an item" />
+          <TextInput w="100%" placeholder="Search for an item" onChange={handleChangeQuery} />
         </Flex>
         <Grid p={1}>
           {filteredData.map((f, index) => (
