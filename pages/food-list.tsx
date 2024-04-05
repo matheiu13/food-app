@@ -1,7 +1,7 @@
 import { ActionIcon, Card, Container, Grid, Image, Text, TextInput, rem } from '@mantine/core';
 import { IconArrowRight } from '@tabler/icons-react';
 import { useState } from 'react';
-import { food } from '../constants/foodlist.js';
+import { food } from '../constants/dummyDB.js/index.js';
 
 export default function FoodPage() {
   const [, setQuery] = useState('');

@@ -1,6 +1,6 @@
 import { Card, Container, Flex, Grid, TextInput, Image, Text } from '@mantine/core';
 import { useState } from 'react';
-import { food } from '../../constants/foodlist.js';
+import { food } from '../../constants/dummyDB.js';
 
 export function FoodList() {
   const [filteredData] = useState(food);
